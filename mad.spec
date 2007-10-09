@@ -51,7 +51,7 @@ MAD has the following special features:
     * completely new implementation based on the ISO/IEC standards
 
 %package -n %{lib_name}-devel
-Summary:        Development tools for programs which will use the %{name} library.
+Summary:        Development tools for programs which will use the %{name} library
 Group:          Development/C
 Requires:	%{lib_name} = %{version}
 Requires:	zlib-devel
