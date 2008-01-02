@@ -16,6 +16,7 @@ Source2:	mad.pc.bz2
 License:	GPLv2+
 Group:		Sound
 URL:		http://www.underbit.com/products/mad/
+BuildRoot:	%_tmppath/%name-%version-%release-root
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
