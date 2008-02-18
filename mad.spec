@@ -6,7 +6,7 @@
 %define libname %mklibname mad %{major}
 %define develname %mklibname -d mad
 
-Summary:	Libmad is a high-quality MPEG Audio Decoder
+Summary:	High-quality MPEG Audio Decoder
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
@@ -33,7 +33,7 @@ MAD has the following special features:
     * completely new implementation based on the ISO/IEC standards
 
 %package -n %{libname}
-Summary:        Libmad is a high-quality MPEG Audio Decoder
+Summary:        High-quality MPEG Audio Decoder
 Group:          System/Libraries
 Provides:       lib%{name} = %{version}-%{release}
 
