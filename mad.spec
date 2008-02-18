@@ -1,7 +1,7 @@
 %define name 	mad
 %define oname 	libmad
 %define version 0.15.1b
-%define release %mkrel 4
+%define release %mkrel 5
 %define major  	0
 %define libname %mklibname mad %{major}
 %define develname %mklibname -d mad
