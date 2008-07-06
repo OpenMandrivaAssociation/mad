@@ -1,22 +1,19 @@
-%define name 	mad
 %define oname 	libmad
-%define version 0.15.1b
-%define release %mkrel 6
 %define major  	0
 %define libname %mklibname mad %{major}
 %define develname %mklibname -d mad
 
 Summary:	High-quality MPEG Audio Decoder
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
-
-Source0:	http://prdownloads.sourceforge.net/mad/%oname-%version.tar.bz2
-Source2:	mad.pc.bz2
+Name:		mad
+Version:	0.15.1b
+Release:	%mkrel 7
 License:	GPLv2+
 Group:		Sound
 URL:		http://www.underbit.com/products/mad/
-BuildRoot:	%_tmppath/%name-%version-%release-root
+Source0:	http://prdownloads.sourceforge.net/mad/%oname-%version.tar.bz2
+Source2:	mad.pc.bz2
+Patch0:		libmad-no_-fforce-mem.diff
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -71,23 +68,28 @@ you should install this.
 
 %prep
 %setup -q -n %oname-%version
+%patch0 -p0
 
 %build
-%define __libtoolize true
+rm -f configure
+touch NEWS AUTHORS ChangeLog
+autoreconf -fis
+
 %configure2_5x
 %make
 
 %install
 rm -rf %buildroot
+
 %makeinstall
+
 %find_lang %{name}
+
 mkdir -p %buildroot/%_libdir/pkgconfig
 bzip2 -cd %SOURCE2 | sed -e 's,/lib$,/%{_lib},' >%buildroot/%_libdir/pkgconfig/mad.pc
 perl -pi -e "s/0.14.2b/%version/" %buildroot/%_libdir/pkgconfig/mad.pc
-%multiarch_includes %buildroot%{_includedir}/mad.h
 
-%clean
-rm -fr %buildroot
+%multiarch_includes %buildroot%{_includedir}/mad.h
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
@@ -96,6 +98,9 @@ rm -fr %buildroot
 %if %mdkversion < 200900
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
+
+%clean
+rm -fr %buildroot
 
 %files -n %{libname}
 %defattr(-,root,root,-)
@@ -111,5 +116,3 @@ rm -fr %buildroot
 %_libdir/pkgconfig/*
 %{_includedir}/*
 %multiarch %{multiarch_includedir}/*.h
-
-
