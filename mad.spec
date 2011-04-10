@@ -1,19 +1,18 @@
-%define oname 	libmad
-%define major  	0
-%define libname %mklibname mad %{major}
-%define develname %mklibname -d mad
-
 Summary:	High-quality MPEG Audio Decoder
 Name:		mad
 Version:	0.15.1b
-Release:	%mkrel 10
+Release:	11
 License:	GPLv2+
 Group:		Sound
 URL:		http://www.underbit.com/products/mad/
 Source0:	http://prdownloads.sourceforge.net/mad/%oname-%version.tar.bz2
 Source2:	mad.pc.bz2
 Patch0:		libmad-no_-fforce-mem.diff
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+
+%define oname 	libmad
+%define major  	0
+%define libname %mklibname mad %{major}
+%define develname %mklibname -d mad
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -29,12 +28,12 @@ MAD has the following special features:
     * 100% fixed-point (integer) computation
     * completely new implementation based on the ISO/IEC standards
 
-%package -n %{libname}
+%package -n	%{libname}
 Summary:        High-quality MPEG Audio Decoder
 Group:          System/Libraries
 Provides:       lib%{name} = %{version}-%{release}
 
-%description -n %{libname}
+%description -n	%{libname}
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
 and the MPEG-2  extension to Lower Sampling Frequencies, as well as the
 so-called MPEG 2.5 format. All three audio layers (Layer I, Layer II, 
@@ -48,7 +47,7 @@ MAD has the following special features:
     * 100% fixed-point (integer) computation
     * completely new implementation based on the ISO/IEC standards
 
-%package -n %develname
+%package -n	%develname
 Summary:        Development tools for programs which will use the %{name} library
 Group:          Development/C
 Requires:	%{libname} = %{version}
@@ -69,18 +68,15 @@ you should install this.
 %prep
 %setup -q -n %oname-%version
 %patch0 -p0
-
-%build
 rm -f configure
 touch NEWS AUTHORS ChangeLog
 autoreconf -fis
 
+%build
 %configure2_5x
 %make
 
 %install
-rm -rf %buildroot
-
 %makeinstall
 
 %find_lang %{name}
@@ -91,28 +87,15 @@ perl -pi -e "s/0.14.2b/%version/" %buildroot/%_libdir/pkgconfig/mad.pc
 
 %multiarch_includes %buildroot%{_includedir}/mad.h
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
- 
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -fr %buildroot
-
 %files -n %{libname}
-%defattr(-,root,root,-)
 %doc COPYING
 %{_libdir}/libmad.so.%{major}*
 
 %files -n %develname
-%defattr(-,root,root)
 %doc COPY* README TODO CHANGES CREDITS
 %{_libdir}/*.la
 %{_libdir}/*.a
 %{_libdir}/*.so
 %_libdir/pkgconfig/*
-%{_includedir}/*
-%multiarch %{multiarch_includedir}/*.h
+%{_includedir}/*.h
+ %{multiarch_includedir}/*.h
