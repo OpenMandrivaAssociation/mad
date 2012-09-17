@@ -87,12 +87,10 @@ sed -e "s/VERSION/%{version}/" %{buildroot}%{_libdir}/pkgconfig/mad.pc
 
 %multiarch_includes %{buildroot}%{_includedir}/mad.h
 
-%find_lang %{name}
-
 %files -n %{libname}
 %{_libdir}/libmad.so.%{major}*
 
-%files -n %develname
+%files -n %{develname}
 %doc COPY* README TODO CHANGES CREDITS
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
