@@ -1,18 +1,18 @@
+%define oname libmad
+%define major 0
+%define libname %mklibname mad %{major}
+%define develname %mklibname -d mad
+
 Summary:	High-quality MPEG Audio Decoder
 Name:		mad
 Version:	0.15.1b
-Release:	12
+Release:	13
 License:	GPLv2+
 Group:		Sound
 URL:		http://www.underbit.com/products/mad/
 Source0:	http://prdownloads.sourceforge.net/mad/%oname-%version.tar.bz2
-Source2:	mad.pc.bz2
+Source2:	mad.pc
 Patch0:		libmad-no_-fforce-mem.diff
-
-%define oname 	libmad
-%define major  	0
-%define libname %mklibname mad %{major}
-%define develname %mklibname -d mad
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -28,10 +28,10 @@ MAD has the following special features:
     * 100% fixed-point (integer) computation
     * completely new implementation based on the ISO/IEC standards
 
-%package -n	%{libname}
-Summary:        High-quality MPEG Audio Decoder
-Group:          System/Libraries
-Provides:       lib%{name} = %{version}-%{release}
+%package -n %{libname}
+Summary:	High-quality MPEG Audio Decoder
+Group:		System/Libraries
+Provides:	lib%{name} = %{version}-%{release}
 
 %description -n	%{libname}
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -47,55 +47,54 @@ MAD has the following special features:
     * 100% fixed-point (integer) computation
     * completely new implementation based on the ISO/IEC standards
 
-%package -n	%develname
-Summary:        Development tools for programs which will use the %{name} library
-Group:          Development/C
-Requires:	%{libname} = %{version}
+%package -n %{develname}
+Summary:	Development tools for programs which will use the %{name} library
+Group:		Development/C
+Requires:	%{libname} = %{version}-%{release}
 Requires:	zlib-devel
-Provides:       %{name}-devel = %{version}-%{release}
-Provides:       lib%{name}-devel = %{version}-%{release}
-Obsoletes: 	%{name}-devel
+Provides:	%{name}-devel = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}-%{release}
+Obsoletes:	%{name}-devel < %{version}-%{release}
 Obsoletes:	%mklibname -d mad 0
 
-%description -n %develname
+%description -n %{develname}
 This package includes the header files and static libraries
 necessary for developing programs using the %{name} library.
  
 If you are going to develop programs which will use the %{name} library
 you should install this.
- 
 
 %prep
-%setup -q -n %oname-%version
+%setup -q -n %{oname}-%{version}
 %patch0 -p0
 rm -f configure
 touch NEWS AUTHORS ChangeLog
 autoreconf -fis
 
 %build
-%configure2_5x
+%configure2_5x \
+	--disable-static
+
 %make
 
 %install
-%makeinstall
+%makeinstall_std
+
+mkdir -p %{buildroot}%{_libdir}/pkgconfig
+install -m644 %{SOURCE2} %{buildroot}%{_libdir}/pkgconfig
+sed -e 's,/lib$,/%{_lib},' %{buildroot}%{_libdir}/pkgconfig/mad.pc
+sed -e "s/VERSION/%{version}/" %{buildroot}%{_libdir}/pkgconfig/mad.pc
+
+%multiarch_includes %{buildroot}%{_includedir}/mad.h
 
 %find_lang %{name}
 
-mkdir -p %buildroot/%_libdir/pkgconfig
-bzip2 -cd %SOURCE2 | sed -e 's,/lib$,/%{_lib},' >%buildroot/%_libdir/pkgconfig/mad.pc
-perl -pi -e "s/0.14.2b/%version/" %buildroot/%_libdir/pkgconfig/mad.pc
-
-%multiarch_includes %buildroot%{_includedir}/mad.h
-
 %files -n %{libname}
-%doc COPYING
 %{_libdir}/libmad.so.%{major}*
 
 %files -n %develname
 %doc COPY* README TODO CHANGES CREDITS
-%{_libdir}/*.la
-%{_libdir}/*.a
 %{_libdir}/*.so
-%_libdir/pkgconfig/*
+%{_libdir}/pkgconfig/*
 %{_includedir}/*.h
- %{multiarch_includedir}/*.h
+%{multiarch_includedir}/*.h
