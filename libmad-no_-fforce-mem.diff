@@ -1,0 +1,11 @@
+--- configure.ac	2004-01-23 04:41:32.000000000 -0500
++++ configure.ac.oden	2008-07-06 10:10:06.000000000 -0400
+@@ -140,7 +140,7 @@
+     case "$optimize" in
+ 	-O|"-O "*)
+ 	    optimize="-O"
+-	    optimize="$optimize -fforce-mem"
++	    : #optimize="$optimize -fforce-mem" gone with gcc43?
+ 	    optimize="$optimize -fforce-addr"
+ 	    : #x optimize="$optimize -finline-functions"
+ 	    : #- optimize="$optimize -fstrength-reduce"
