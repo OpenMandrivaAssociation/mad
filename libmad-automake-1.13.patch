@@ -1,0 +1,11 @@
+--- libmad-0.15.1b/configure.ac.bero	2013-01-16 01:10:41.869089992 +0100
++++ libmad-0.15.1b/configure.ac	2013-01-16 01:10:45.930041404 +0100
+@@ -28,7 +28,7 @@ AC_CONFIG_SRCDIR([decoder.h])
+ 
+ AM_INIT_AUTOMAKE
+ 
+-AM_CONFIG_HEADER([config.h])
++AC_CONFIG_HEADERS([config.h])
+ 
+ dnl System type.
+ 

@@ -13,6 +13,7 @@ URL:		http://www.underbit.com/products/mad/
 Source0:	http://prdownloads.sourceforge.net/mad/%{oname}-%{version}.tar.bz2
 Source2:	mad.pc.bz2
 Patch0:		libmad-no_-fforce-mem.diff
+Patch1:		libmad-automake-1.13.patch
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -66,6 +67,7 @@ you should install this.
 %prep
 %setup -q -n %{oname}-%{version}
 %patch0 -p0
+%patch1 -p1 -b .am113~
 rm -f configure
 touch NEWS AUTHORS ChangeLog
 autoreconf -fis
