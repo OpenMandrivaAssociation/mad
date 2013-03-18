@@ -14,6 +14,7 @@ Source0:	http://prdownloads.sourceforge.net/mad/%{oname}-%{version}.tar.bz2
 Source2:	mad.pc.bz2
 Patch0:		libmad-no_-fforce-mem.diff
 Patch1:		libmad-automake-1.13.patch
+Patch2:		libmad-0.15.1b-thumb2-fixed-arm.patch
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -68,6 +69,7 @@ you should install this.
 %setup -q -n %{oname}-%{version}
 %patch0 -p0
 %patch1 -p1 -b .am113~
+%patch2 -p1 -b .arm_bits
 rm -f configure
 touch NEWS AUTHORS ChangeLog
 autoreconf -fis
