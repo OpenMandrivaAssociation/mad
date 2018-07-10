@@ -6,7 +6,7 @@
 Summary:	High-quality MPEG Audio Decoder
 Name:		mad
 Version:	0.15.1b
-Release:	27
+Release:	28
 License:	GPLv2+
 Group:		Sound
 Url:		http://www.underbit.com/products/mad/
