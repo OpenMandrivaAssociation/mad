@@ -3,6 +3,8 @@
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
 
+%global optflags %{optflags} -Qunused-arguments
+
 Summary:	High-quality MPEG Audio Decoder
 Name:		mad
 Version:	0.15.1b
@@ -65,17 +67,18 @@ you should install this.
 
 %prep
 %setup -qn %{oname}-%{version}
-%apply_patches
+%autopatch -p1
+
 rm -f configure
 touch NEWS AUTHORS ChangeLog
 autoreconf -fis
 
 %build
-%configure2_5x --disable-static
-%make
+%configure --disable-static
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 bzip2 -cd %{SOURCE2} | sed -e 's,/lib$,/%{_lib},' >%{buildroot}%{_libdir}/pkgconfig/mad.pc
