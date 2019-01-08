@@ -3,12 +3,10 @@
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname -d %{name}
 
-%global optflags %{optflags} -Qunused-arguments
-
 Summary:	High-quality MPEG Audio Decoder
 Name:		mad
 Version:	0.15.1b
-Release:	29
+Release:	30
 License:	GPLv2+
 Group:		Sound
 Url:		http://www.underbit.com/products/mad/
@@ -17,6 +15,9 @@ Source2:	mad.pc.bz2
 Patch0:		libmad-no_-fforce-mem.diff
 Patch1:		libmad-automake-1.13.patch
 Patch2:		libmad-0.15.1b-thumb2-fixed-arm.patch
+# We know better what compiler flags our compilers can/can't take
+# than a script that was written when gcc 4.x was current...
+Patch3:		libmad-0.15.1b-dont-touch-CFLAGS.patch
 
 %description
 MAD is a high-quality MPEG audio decoder. It currently supports MPEG-1
@@ -66,8 +67,7 @@ you should install this.
 
 
 %prep
-%setup -qn %{oname}-%{version}
-%autopatch -p1
+%autosetup -p1 -n %{oname}-%{version}
 
 rm -f configure
 touch NEWS AUTHORS ChangeLog
