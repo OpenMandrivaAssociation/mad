@@ -9,7 +9,7 @@ Version:	0.15.1b
 Release:	31
 License:	GPLv2+
 Group:		Sound
-Url:		http://www.underbit.com/products/mad/
+Url:		https://www.underbit.com/products/mad/
 Source0:	http://prdownloads.sourceforge.net/mad/%{oname}-%{version}.tar.bz2
 Source2:	mad.pc.bz2
 Patch0:		libmad-no_-fforce-mem.diff
